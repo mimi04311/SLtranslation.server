@@ -5,7 +5,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
-const API_KEY = process.env.API_KEY; 
+const API_KEY = process.env.API_KEY;
 
 app.post('/translate', async (req, res) => {
     const rawText = req.body.text;
@@ -19,12 +19,12 @@ app.post('/translate', async (req, res) => {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${API_KEY}`,
-                "HTTP-Referer": "http://secondlife.com", 
-                "X-Title": "SL_Translator",              
+                "HTTP-Referer": "http://secondlife.com",
+                "X-Title": "SL_Translator",
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "openrouter/auto", // Automatically routes to the best available free model
+                model: "openrouter/auto",
                 messages: [
                     {
                         role: "system",
@@ -40,6 +40,20 @@ app.post('/translate', async (req, res) => {
         });
 
         const data = await response.json();
-        
+
         if (data.choices && data.choices[0]) {
-            const translation = dat
+            const translation = data.choices[0].message.content.trim();
+            res.status(200).send(translation);
+        } else {
+            console.log("OpenRouter API Error Response:", JSON.stringify(data));
+            res.status(500).send("Translation failed.");
+        }
+    } catch (error) {
+        console.error("Server Crash Error:", error);
+        res.status(500).send("Server Error.");
+    }
+});
+
+app.listen(PORT, () => {
+    console.log(`Translation server running on port ${PORT}`);
+});
