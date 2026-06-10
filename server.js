@@ -24,7 +24,7 @@ app.post('/translate', async (req, res) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "google/gemma-2-9b-it:free", // Switched to active free Gemma 2 model
+                model: "mistralai/mistral-7b-instruct:free", // Switched to highly stable Mistral 7B Free model
                 messages: [
                     {
                         role: "system",
