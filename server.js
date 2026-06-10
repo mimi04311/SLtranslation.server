@@ -24,7 +24,7 @@ app.post('/translate', async (req, res) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "meta-llama/llama-3.1-8b-instruct:free", // Updated to the active Free Llama 3.1 model
+                model: "google/gemma-2-9b-it:free", // Switched to active free Gemma 2 model
                 messages: [
                     {
                         role: "system",
