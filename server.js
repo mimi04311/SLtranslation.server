@@ -5,7 +5,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+// Add your OpenRouter sk-or-v1-... key to your host's environment variables as API_KEY
+const API_KEY = process.env.API_KEY; 
 
 app.post('/translate', async (req, res) => {
     const rawText = req.body.text;
@@ -15,14 +16,16 @@ app.post('/translate', async (req, res) => {
     }
 
     try {
-        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${OPENAI_API_KEY}`,
+                "Authorization": `Bearer ${API_KEY}`,
+                "HTTP-Referer": "http://secondlife.com", // Required by OpenRouter
+                "X-Title": "SL_Translator",              // Required by OpenRouter
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "gpt-4o",
+                model: "meta-llama/llama-3-8b-instruct:free", // Fully free, un-censored model
                 messages: [
                     {
                         role: "system",
