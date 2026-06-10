@@ -24,7 +24,7 @@ app.post('/translate', async (req, res) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "mistralai/mistral-7b-instruct:free", // Switched to highly stable Mistral 7B Free model
+                model: "openrouter/auto", // Automatically routes to the best available free model
                 messages: [
                     {
                         role: "system",
@@ -42,19 +42,4 @@ app.post('/translate', async (req, res) => {
         const data = await response.json();
         
         if (data.choices && data.choices[0]) {
-            const translation = data.choices[0].message.content.trim();
-            res.status(200).send(translation);
-        } else {
-            console.log("OpenRouter API Error Response:", JSON.stringify(data));
-            res.status(500).send("Translation failed.");
-        }
-
-    } catch (error) {
-        console.error("Server Crash Error:", error);
-        res.status(500).send("Server Error.");
-    }
-});
-
-app.listen(PORT, () => {
-    console.log(`Translation server running on port ${PORT}`);
-});
+            const translation = dat
