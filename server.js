@@ -24,7 +24,7 @@ app.post('/translate', async (req, res) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "meta-llama/llama-3-8b-instruct:free", 
+                model: "meta-llama/llama-3.1-8b-instruct:free", // Updated to the active Free Llama 3.1 model
                 messages: [
                     {
                         role: "system",
@@ -45,7 +45,6 @@ app.post('/translate', async (req, res) => {
             const translation = data.choices[0].message.content.trim();
             res.status(200).send(translation);
         } else {
-            // DIAGNOSTIC LOG: This will force Render to print the exact OpenRouter error
             console.log("OpenRouter API Error Response:", JSON.stringify(data));
             res.status(500).send("Translation failed.");
         }
