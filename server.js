@@ -5,7 +5,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
-// Add your OpenRouter sk-or-v1-... key to your host's environment variables as API_KEY
 const API_KEY = process.env.API_KEY; 
 
 app.post('/translate', async (req, res) => {
@@ -20,12 +19,12 @@ app.post('/translate', async (req, res) => {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${API_KEY}`,
-                "HTTP-Referer": "http://secondlife.com", // Required by OpenRouter
-                "X-Title": "SL_Translator",              // Required by OpenRouter
+                "HTTP-Referer": "http://secondlife.com", 
+                "X-Title": "SL_Translator",              
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "meta-llama/llama-3-8b-instruct:free", // Fully free, un-censored model
+                model: "meta-llama/llama-3-8b-instruct:free", 
                 messages: [
                     {
                         role: "system",
@@ -46,11 +45,13 @@ app.post('/translate', async (req, res) => {
             const translation = data.choices[0].message.content.trim();
             res.status(200).send(translation);
         } else {
+            // DIAGNOSTIC LOG: This will force Render to print the exact OpenRouter error
+            console.log("OpenRouter API Error Response:", JSON.stringify(data));
             res.status(500).send("Translation failed.");
         }
 
     } catch (error) {
-        console.error(error);
+        console.error("Server Crash Error:", error);
         res.status(500).send("Server Error.");
     }
 });
